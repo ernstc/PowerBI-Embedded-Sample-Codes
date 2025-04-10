@@ -1,0 +1,8 @@
+@AppOwnsData_HostAddress = http://localhost:5000
+@AuthToken = xxx.yyy.zzz
+
+GET {{AppOwnsData_HostAddress}}/embedinfo
+Authorization: Beader {{AuthToken}}
+Content-Type: application/json
+
+###
