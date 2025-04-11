@@ -17,7 +17,7 @@ grant_type=client_credentials&client_id={{clientId}}&client_secret={{clientSecre
 
 
 ###
-# Test embed token senza Row Level Security
+# Test embed token con Row Level Security
 
 POST https://api.powerbi.com/v1.0/myorg/groups/{{groupId}}/reports/{{reportId}}/GenerateToken
 Authorization: Bearer {{login.response.body.$.access_token}}
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 
 ###
-# Test embed token con Row Level Security
+# Test embed token senza Row Level Security
 
 POST https://api.powerbi.com/v1.0/myorg/groups/{{groupId}}/reports/{{reportId}}/GenerateToken
 Authorization: Bearer {{login.response.body.$.access_token}}
