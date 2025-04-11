@@ -1,8 +1,74 @@
+@tenantId=00000000-0000-0000-0000-000000000000
+@clientId=00000000-0000-0000-0000-000000000000
+@clientSecret=secret
+
+@groupId=00000000-0000-0000-0000-000000000000
+@reportId=00000000-0000-0000-0000-000000000000
+@datasetId=00000000-0000-0000-0000-000000000000
+
+###
+# Test per service principal authentication
+
+# @name login
+POST https://login.microsoftonline.com/{{tenantId}}/oauth2/v2.0/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&client_id={{clientId}}&client_secret={{clientSecret}}&scope=https://analysis.windows.net/powerbi/api/.default
+
+
+###
+# Test embed token senza Row Level Security
+
+POST https://api.powerbi.com/v1.0/myorg/groups/{{groupId}}/reports/{{reportId}}/GenerateToken
+Authorization: Bearer {{login.response.body.$.access_token}}
+Content-Type: application/json
+
+{
+  "reports": [
+    {
+      "allowEdit": false,
+      "id": "{{reportId}}"
+    }
+  ],
+  "identities": [
+    {
+      "username": "john@contoso.com",
+      "roles": [
+        "NorthAmerica&Pacific"
+      ],
+      "datasets": [
+        "{{datasetId}}"
+      ]
+    }
+  ]
+}
+
+
+
+###
+# Test embed token con Row Level Security
+
+POST https://api.powerbi.com/v1.0/myorg/groups/{{groupId}}/reports/{{reportId}}/GenerateToken
+Authorization: Bearer {{login.response.body.$.access_token}}
+Content-Type: application/json
+
+{
+  "reports": [
+    {
+      "allowEdit": false,
+      "id": "{{reportId}}"
+    }
+  ]
+}
+
+###
+
+#----------------------------------------------------------
+# App Owns Data controllers tests
+
 @AppOwnsData_HostAddress = http://localhost:5000
 @AuthToken = xxx.yyy.zzz
 
 GET {{AppOwnsData_HostAddress}}/embedinfo
 Authorization: Beader {{AuthToken}}
 Content-Type: application/json
-
-###
